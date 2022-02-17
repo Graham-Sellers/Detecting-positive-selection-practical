@@ -5,6 +5,9 @@ height = read.csv('../data/height_gwas.txt', sep = '\t', header = T)
 furlength = read.csv('../data/furlength_gwas.txt', sep = '\t', header = T)
 furnish = read.csv('../data/furnish_gwas.txt', sep = '\t', header = T)
 
+test = read.csv('../data/test_gwas.txt', sep = '\t', header = T)
+
+
 my_genome_gwas = furnish
 
 man_data = man.data.frame(my_genome_gwas)

@@ -93,7 +93,7 @@ man.plot = function(df, chroms, threshold, point.cols, line.col) {
   segments(0, -1, max(df$points) + space, -1, xpd = T)
   segments(0, -1, 0, y_max, xpd = T)
   
-  mtext(expression(paste('-log10(', italic('P'), '_wald)')), side = 2, cex = 1.2)
+  mtext(expression(paste('-log10(', italic('P'), ')')), side = 2, cex = 1.2)
   
   return(df)
 }
@@ -136,9 +136,4 @@ man.label = function(df, threshold) {
   
   return(maxpoints)
 }
-
-#df = man_data
-
-#high_df = df[df$transformed_pvalue >= 8.64]
-#unique(high_df$gene,)
 
