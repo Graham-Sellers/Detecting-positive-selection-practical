@@ -5,7 +5,7 @@
 
 # ----------------------------------------------------------------------------------------------------------------
 
-man.plot = function(df, chroms, threshold, highlight, point.cols, line.col) {
+man.plot = function(df, chroms, threshold, highlight, point.cex, point.cols, line.col) {
   
   # deal with missing inputs and set defaults:
   if(missing(chroms)){
@@ -35,6 +35,11 @@ man.plot = function(df, chroms, threshold, highlight, point.cols, line.col) {
   } else {
     cols = highlight}
 
+  if(missing(point.cex)){
+    point.cex = 0.4
+  } else {
+    point.cex = point.cex}
+  
   # transform the data:
   full_df = as.data.frame(df[FALSE,])
   full_df$chrom = as.character(full_df$chrom)
@@ -66,7 +71,17 @@ man.plot = function(df, chroms, threshold, highlight, point.cols, line.col) {
   genes_df = df[df$transformed_pvalue >= significance,]
   genes_df = genes_df[!grepl('LOC', genes_df$gene),]
   genes_df = genes_df[!genes_df$gene == '',]
-
+  genes_df = genes_df[!colnames(genes_df) %in% 'cols']
+  
+  genes_top = genes_df[FALSE,]
+  
+  for(gene in unique(genes_df$gene)){
+    hip = genes_df[genes_df$gene == gene,]
+    gene_top = hip[hip$transformed_pvalue == max(hip$transformed_pvalue),]
+    genes_top = rbind(genes_top, gene_top)
+  }
+  genes_df = genes_top
+  
   # set x axis label points for chromosomes:
   chrom_labs = c()
   for(c in unique(df$chrom)){
@@ -88,7 +103,7 @@ man.plot = function(df, chroms, threshold, highlight, point.cols, line.col) {
   #add the points:
   points(df$plot_points, df$transformed_pvalue,
     col = df$cols,
-    pch = 16, cex = 0.4)
+    pch = 16, cex = point.cex)
   
   # add significance threshold dotted line
   segments(0, significance, max(df$plot_points) + space, significance, lty = 5, lwd = 2, col = line.col)
@@ -97,7 +112,7 @@ man.plot = function(df, chroms, threshold, highlight, point.cols, line.col) {
   points(df[df$transformed_pvalue >= significance,]$plot_points,
          df[df$transformed_pvalue >= significance,]$transformed_pvalue,
          col = cols,
-         pch = 16, cex = 0.4)
+         pch = 16, cex = point.cex)
   
   # add axes:
   axis(1, at = chrom_labs, labels = unique(df$chrom), lwd = 0, lwd.ticks = 1.5,
@@ -117,7 +132,7 @@ man.plot = function(df, chroms, threshold, highlight, point.cols, line.col) {
     top_gene = hip[hip$transformed_pvalue == max(hip$transformed_pvalue),]
     top_genes = rbind(top_genes, top_gene)
   }
-  
+
   text(top_genes$plot_points, top_genes$transformed_pvalue, top_genes$gene, pos=4, cex = 0.6, xpd = T)
   
   return(genes_df)

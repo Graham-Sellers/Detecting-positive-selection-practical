@@ -1,5 +1,5 @@
 
-source('../functions/man.plot2.R')
+source('../functions/man.plot.R')
 
 height = read.csv('../data/height_gwas.txt', sep = '\t', header = T)
 furlength = read.csv('../data/furlength_gwas.txt', sep = '\t', header = T)
@@ -9,7 +9,7 @@ test = read.csv('../data/test_gwas.txt', sep = '\t', header = T)
 
 png('../plots/test.png', height = 600, width = 2000, units = 'px', pointsize = 30)
 par(mar = c(3, 1.5, 0, 1))
-test_plot = man.plot(test)
+test_plot = man.plot(test, point.cex = 0.7)
 dev.off()
 
 png('../plots/furlength.png', height = 600, width = 2000, units = 'px', pointsize = 30)
